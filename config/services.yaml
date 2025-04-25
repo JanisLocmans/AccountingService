@@ -41,3 +41,12 @@ services:
             $schedule: '@app.scheduler.update_exchange_rates'
             $eventDispatcher: '@event_dispatcher'
             $container: '@service_container'
+
+    # Register API exception handlers
+    App\Request\ParamConverter\ClientIdConverter:
+        tags:
+            - { name: 'controller.argument_value_resolver', priority: 150 }
+
+    App\EventListener\ApiExceptionListener:
+        tags:
+            - { name: 'kernel.event_listener', event: 'kernel.exception', priority: 100 }

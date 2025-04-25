@@ -34,14 +34,32 @@ trait EntityFinderTrait
         /** @var EntityRepository<T> $repository */
         $repository = $this->entityManager->getRepository($entityClass);
         $entity = $repository->find($id);
-        
+
         if ($entity === null) {
             return [null, $this->createErrorResponse(
                 sprintf('%s not found with ID: %d', $entityName, $id),
                 Response::HTTP_NOT_FOUND
             )];
         }
-        
+
         return [$entity, null];
+    }
+
+    /**
+     * Validates that a string ID is a valid integer and returns it as an int.
+     *
+     * @param string $id The ID to validate
+     * @return array{0: int|null, 1: JsonResponse|null} Tuple containing either the validated ID or an error response
+     */
+    protected function validateId(string $id): array
+    {
+        if (!ctype_digit($id)) {
+            return [null, $this->createErrorResponse(
+                'Invalid ID format. ID must be an integer.',
+                Response::HTTP_BAD_REQUEST
+            )];
+        }
+
+        return [(int) $id, null];
     }
 }

@@ -20,10 +20,10 @@ use Symfony\Component\Scheduler\Schedule;
 class RunSchedulerWorkerCommand extends Command
 {
     public function __construct(
-        private Schedule $schedule,
         private MessageBusInterface $messageBus,
-        private EventDispatcherInterface $eventDispatcher,
-        private ContainerInterface $container
+        private ContainerInterface $container,
+        private Schedule $schedule,
+        private EventDispatcherInterface $eventDispatcher
     ) {
         parent::__construct();
     }

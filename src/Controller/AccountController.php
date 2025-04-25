@@ -100,17 +100,28 @@ class AccountController extends ApiController
                 )
             ),
             new OA\Response(
+                response: 400,
+                description: 'Invalid account ID format',
+                content: new OA\JsonContent(ref: '#/components/schemas/Error')
+            ),
+            new OA\Response(
                 response: 404,
                 description: 'Account not found',
                 content: new OA\JsonContent(ref: '#/components/schemas/Error')
             )
         ]
     )]
-    public function getAccountTransactions(int $id, Request $request): Response
+    public function getAccountTransactions(string $id, Request $request): Response
     {
         try {
+            // Validate and convert the ID to an integer
+            [$accountId, $errorResponse] = $this->validateId($id);
+            if ($errorResponse) {
+                return $errorResponse;
+            }
+
             // Find the account
-            [$account, $errorResponse] = $this->findEntityById(Account::class, $id, 'Account');
+            [$account, $errorResponse] = $this->findEntityById(Account::class, $accountId, 'Account');
             if ($errorResponse) {
                 return $errorResponse;
             }

@@ -71,16 +71,30 @@ class ClientController extends ApiController
                 )
             ),
             new OA\Response(
+                response: 400,
+                description: 'Invalid client ID format',
+                content: new OA\JsonContent(ref: '#/components/schemas/Error')
+            ),
+            new OA\Response(
                 response: 404,
                 description: 'Client not found',
                 content: new OA\JsonContent(ref: '#/components/schemas/Error')
             )
         ]
     )]
-    public function getClientAccounts(int $id): Response
+    public function getClientAccounts(string $id): Response
     {
         try {
-            [$client, $errorResponse] = $this->findEntityById(Client::class, $id, 'Client');
+            // Validate and convert the ID to an integer
+            if (!ctype_digit($id)) {
+                return $this->createErrorResponse(
+                    'Invalid client ID format. Client ID must be an integer.',
+                    Response::HTTP_BAD_REQUEST
+                );
+            }
+
+            $clientId = (int) $id;
+            [$client, $errorResponse] = $this->findEntityById(Client::class, $clientId, 'Client');
             if ($errorResponse) {
                 return $errorResponse;
             }
