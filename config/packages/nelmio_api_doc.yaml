@@ -1,0 +1,144 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: Funds Transfer Service API
+            description: |
+                RESTful API for transferring funds between customer accounts.
+
+                ## Features
+                - List accounts for a client
+                - Get transaction history with pagination
+                - Transfer funds between accounts with currency conversion
+
+                ## Supported Currencies
+                - USD (US Dollar)
+                - EUR (Euro)
+                - GBP (British Pound)
+            version: 1.0.0
+            contact:
+                name: API Support
+                email: support@example.com
+        components:
+            securitySchemes:
+                Bearer:
+                    type: http
+                    scheme: bearer
+                    bearerFormat: JWT
+            schemas:
+                Error:
+                    type: object
+                    properties:
+                        success:
+                            type: boolean
+                            example: false
+                        message:
+                            type: string
+                            example: An error occurred
+                        errors:
+                            type: object
+                            example: {"field": "Error message"}
+                Success:
+                    type: object
+                    properties:
+                        success:
+                            type: boolean
+                            example: true
+                        data:
+                            type: object
+                            example: {}
+                Client:
+                    type: object
+                    properties:
+                        id:
+                            type: integer
+                            example: 1
+                        name:
+                            type: string
+                            example: John Doe
+                        email:
+                            type: string
+                            example: john.doe@example.com
+                        accounts:
+                            type: array
+                            items:
+                                $ref: '#/components/schemas/Account'
+                Account:
+                    type: object
+                    properties:
+                        id:
+                            type: integer
+                            example: 1
+                        accountNumber:
+                            type: string
+                            example: ACC001
+                        currency:
+                            type: string
+                            example: USD
+                            enum: [USD, EUR, GBP]
+                        balance:
+                            type: number
+                            format: float
+                            example: 1000.50
+                        client:
+                            $ref: '#/components/schemas/Client'
+                Transaction:
+                    type: object
+                    properties:
+                        id:
+                            type: integer
+                            example: 1
+                        sourceAccount:
+                            $ref: '#/components/schemas/Account'
+                        destinationAccount:
+                            $ref: '#/components/schemas/Account'
+                        amount:
+                            type: number
+                            format: float
+                            example: 100.50
+                        currency:
+                            type: string
+                            example: USD
+                            enum: [USD, EUR, GBP]
+                        createdAt:
+                            type: string
+                            format: date-time
+                            example: '2023-06-01T12:00:00+00:00'
+                        description:
+                            type: string
+                            example: Payment for services
+                            nullable: true
+                        exchangeRate:
+                            type: number
+                            format: float
+                            example: 0.85
+                TransferRequest:
+                    type: object
+                    required:
+                        - sourceAccountId
+                        - destinationAccountId
+                        - amount
+                        - currency
+                    properties:
+                        sourceAccountId:
+                            type: integer
+                            example: 1
+                        destinationAccountId:
+                            type: integer
+                            example: 2
+                        amount:
+                            type: number
+                            format: float
+                            example: 100.50
+                        currency:
+                            type: string
+                            example: USD
+                            enum: [USD, EUR, GBP]
+                        description:
+                            type: string
+                            example: Payment for services
+                            nullable: true
+        security:
+            - Bearer: []
+    areas: # to filter documented areas
+        path_patterns:
+            - ^/api(?!/doc$) # Accepts routes under /api except /api/doc

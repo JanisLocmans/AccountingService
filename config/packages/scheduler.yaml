@@ -1,0 +1,33 @@
+services:
+    # Configure the scheduler
+    app.scheduler.update_exchange_rates:
+        class: Symfony\Component\Scheduler\Schedule
+        arguments: [null]
+        tags:
+            - { name: 'scheduler.schedule' }
+
+    app.scheduler.update_exchange_rates.cron_expression:
+        class: Cron\CronExpression
+        factory: ['Cron\CronExpression', 'factory']
+        arguments:
+            - '* * * * *' # Run every minute
+
+    app.scheduler.update_exchange_rates.trigger:
+        class: Symfony\Component\Scheduler\Trigger\CronExpressionTrigger
+        arguments:
+            - '@app.scheduler.update_exchange_rates.cron_expression'
+
+    app.scheduler.update_exchange_rates.message:
+        class: Symfony\Component\Scheduler\RecurringMessage
+        arguments:
+            - '@app.scheduler.update_exchange_rates.message_instance'
+            - '@app.scheduler.update_exchange_rates.trigger'
+        calls:
+            - [register, ['@app.scheduler.update_exchange_rates']]
+        tags:
+            - { name: 'scheduler.recurring_message' }
+        public: true
+
+    app.scheduler.update_exchange_rates.message_instance:
+        class: App\Message\UpdateExchangeRatesMessage
+        public: true
