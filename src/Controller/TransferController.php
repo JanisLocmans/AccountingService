@@ -28,11 +28,11 @@ class TransferController extends ApiController
      * @param LoggerInterface|null $logger For logging exceptions
      */
     public function __construct(
-        SerializerInterface $serializer,
-        ValidatorInterface $validator,
-        EntityManagerInterface $entityManager,
-        private TransferServiceInterface $transferService,
-        ?LoggerInterface $logger = null
+        SerializerInterface                       $serializer,
+        ValidatorInterface                        $validator,
+        EntityManagerInterface                    $entityManager,
+        private readonly TransferServiceInterface $transferService,
+        ?LoggerInterface                          $logger = null
     ) {
         parent::__construct($serializer, $validator, $entityManager, $logger);
     }
@@ -41,14 +41,14 @@ class TransferController extends ApiController
     #[OA\Post(
         path: '/api/transfers',
         operationId: 'transferFunds',
-        summary: 'Transfer funds between accounts',
         description: 'Transfers funds from one account to another with currency conversion if needed',
-        tags: ['Transfers'],
+        summary: 'Transfer funds between accounts',
         requestBody: new OA\RequestBody(
             description: 'Transfer request details',
             required: true,
             content: new OA\JsonContent(ref: '#/components/schemas/TransferRequest')
         ),
+        tags: ['Transfers'],
         responses: [
             new OA\Response(
                 response: 201,

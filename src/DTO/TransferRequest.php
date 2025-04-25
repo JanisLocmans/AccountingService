@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\DTO;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator\Constraints as CustomAssert;
 
 class TransferRequest
 {
@@ -26,7 +27,7 @@ class TransferRequest
 
     #[Assert\NotBlank(message: 'Currency is required')]
     #[Assert\Length(exactly: 3, exactMessage: 'Currency must be a 3-letter code')]
-    #[Assert\Currency(message: 'Invalid currency code')]
+    #[CustomAssert\SimpleCurrency]
     private string $currency;
 
     #[Assert\Length(max: 255, maxMessage: 'Description cannot be longer than {{ limit }} characters')]

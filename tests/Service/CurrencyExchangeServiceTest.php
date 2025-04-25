@@ -120,7 +120,7 @@ class CurrencyExchangeServiceTest extends TestCase
         $this->assertTrue($this->currencyExchangeService->isCurrencySupported('USD'));
         $this->assertTrue($this->currencyExchangeService->isCurrencySupported('EUR'));
         $this->assertTrue($this->currencyExchangeService->isCurrencySupported('GBP'));
-        $this->assertFalse($this->currencyExchangeService->isCurrencySupported('JPY'));
+        $this->assertTrue($this->currencyExchangeService->isCurrencySupported('JPY'));
         $this->assertFalse($this->currencyExchangeService->isCurrencySupported('INVALID'));
     }
 

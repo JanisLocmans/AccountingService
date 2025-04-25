@@ -9,20 +9,20 @@ use PHPUnit\Framework\TestCase;
 class TransactionTest extends TestCase
 {
     private Transaction $transaction;
-    
+
     protected function setUp(): void
     {
         $this->transaction = new Transaction();
     }
-    
+
     public function testGettersAndSetters(): void
     {
         $sourceAccount = new Account();
         $sourceAccount->setAccountNumber('ACC001');
-        
+
         $destinationAccount = new Account();
         $destinationAccount->setAccountNumber('ACC002');
-        
+
         $this->transaction->setId(1);
         $this->transaction->setSourceAccount($sourceAccount);
         $this->transaction->setDestinationAccount($destinationAccount);
@@ -30,7 +30,7 @@ class TransactionTest extends TestCase
         $this->transaction->setCurrency('USD');
         $this->transaction->setDescription('Test transaction');
         $this->transaction->setCreatedAt(new \DateTimeImmutable('2023-01-01'));
-        
+
         $this->assertEquals(1, $this->transaction->getId());
         $this->assertEquals($sourceAccount, $this->transaction->getSourceAccount());
         $this->assertEquals($destinationAccount, $this->transaction->getDestinationAccount());
@@ -39,14 +39,10 @@ class TransactionTest extends TestCase
         $this->assertEquals('Test transaction', $this->transaction->getDescription());
         $this->assertEquals('2023-01-01', $this->transaction->getCreatedAt()->format('Y-m-d'));
     }
-    
-    public function testSetAccount(): void
+
+    public function testExchangeRate(): void
     {
-        $account = new Account();
-        $account->setAccountNumber('ACC001');
-        
-        $this->transaction->setAccount($account);
-        
-        $this->assertEquals($account, $this->transaction->getAccount());
+        $this->transaction->setExchangeRate(0.85);
+        $this->assertEquals(0.85, $this->transaction->getExchangeRate());
     }
 }

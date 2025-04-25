@@ -21,7 +21,7 @@ class CurrencyExchangeService implements CurrencyExchangeServiceInterface
 {
     private const CACHE_TTL = 3600; // 1 hour in seconds
     private const DB_TTL = 86400; // 24 hours in seconds
-    private const SUPPORTED_CURRENCIES = ['USD', 'EUR', 'GBP'];
+    private const SUPPORTED_CURRENCIES = ['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'CHF', 'CNY', 'INR', 'RUB'];
 
     private array $cachedRates = [];
     private array $cachedTimestamps = [];

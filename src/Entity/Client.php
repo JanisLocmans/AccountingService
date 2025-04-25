@@ -41,6 +41,16 @@ class Client
         return $this->id;
     }
 
+    /**
+     * Set ID (for testing purposes only)
+     */
+    public function setId(int $id): static
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function getName(): ?string
     {
         return $this->name;

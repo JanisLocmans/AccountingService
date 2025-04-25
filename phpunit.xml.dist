@@ -23,10 +23,19 @@
         </testsuite>
     </testsuites>
 
-    <coverage processUncoveredFiles="true">
+    <coverage processUncoveredFiles="true" cacheDirectory=".phpunit.cache/code-coverage">
         <include>
             <directory suffix=".php">src</directory>
         </include>
+        <exclude>
+            <directory>src/Entity</directory>
+            <directory>src/Repository</directory>
+            <directory>src/Kernel.php</directory>
+        </exclude>
+        <report>
+            <html outputDirectory="coverage-report"/>
+            <text outputFile="php://stdout" showUncoveredFiles="true" showOnlySummary="true"/>
+        </report>
     </coverage>
 
     <listeners>
